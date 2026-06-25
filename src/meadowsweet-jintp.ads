@@ -1,7 +1,6 @@
-with Meadowsweet;
 with Servlet.Responses;
 
-package Meadowsweet_Jintp is
+package Meadowsweet.Jintp is
 
    type Jintp_Renderer is new Meadowsweet.Renderer with null record;
 
@@ -11,4 +10,4 @@ package Meadowsweet_Jintp is
       Model : Meadowsweet.Inspectable_Bean'Class;
       Response : in out Servlet.Responses.Response'Class);
 
-end Meadowsweet_Jintp;
+end Meadowsweet.Jintp;

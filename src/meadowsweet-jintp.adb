@@ -1,20 +1,15 @@
-with Ada.Strings.Unbounded;
 with Servlet.Streams;
-with Util.Beans.Objects;
 with Jintp;
 
-package body Meadowsweet_Jintp is
-
-   use Ada.Strings.Unbounded;
-   use Util.Beans.Objects;
+package body Meadowsweet.Jintp is
 
    type Inspectable_Bean_Access is access all Meadowsweet.Inspectable_Bean;
 
    procedure To_Dictionary (Source : Meadowsweet.Inspectable_Bean'Class;
-                            Target : in out Jintp.Dictionary);
+                            Target : in out Standard.Jintp.Dictionary);
 
    procedure To_List (Source : Object;
-                      Target : in out Jintp.List) is
+                      Target : in out Standard.Jintp.List) is
       Length : constant Natural := Get_Count (Source);
       Value : Object;
    begin
@@ -30,7 +25,7 @@ package body Meadowsweet_Jintp is
             --      Target.Append (To_Long_Float (Value));
             when TYPE_BEAN =>
                declare
-                  D : Jintp.Dictionary;
+                  D : Standard.Jintp.Dictionary;
                begin
                   To_Dictionary (Inspectable_Bean_Access (To_Bean (Value)).all,
                                  D);
@@ -38,7 +33,7 @@ package body Meadowsweet_Jintp is
                end;
             when TYPE_ARRAY =>
                declare
-                  L : Jintp.List;
+                  L : Standard.Jintp.List;
                begin
                   To_List (Value, L);
                   Target.Append (L);
@@ -50,7 +45,7 @@ package body Meadowsweet_Jintp is
    end To_List;
 
    procedure To_Dictionary (Source : Meadowsweet.Inspectable_Bean'Class;
-                            Target : in out Jintp.Dictionary) is
+                            Target : in out Standard.Jintp.Dictionary) is
       Property_Names : constant Meadowsweet.String_Array
         := Source.Property_Names;
       Value : Object;
@@ -68,7 +63,7 @@ package body Meadowsweet_Jintp is
                Target.Insert (Property_Names (I), To_Long_Float (Value));
             when TYPE_BEAN =>
                declare
-                  D : Jintp.Dictionary;
+                  D : Standard.Jintp.Dictionary;
                begin
                   To_Dictionary (Inspectable_Bean_Access (To_Bean (Value)).all,
                                  D);
@@ -76,7 +71,7 @@ package body Meadowsweet_Jintp is
                end;
             when TYPE_ARRAY =>
                declare
-                  L : Jintp.List;
+                  L : Standard.Jintp.List;
                begin
                   To_List (Value, L);
                   Target.Insert (Property_Names (I), L);
@@ -95,12 +90,12 @@ package body Meadowsweet_Jintp is
    is
       Stream : Servlet.Streams.Print_Stream := Response.Get_Output_Stream;
       Content : Unbounded_String;
-      Values : Jintp.Dictionary;
+      Values : Standard.Jintp.Dictionary;
    begin
       To_Dictionary (Model, Values);
-      Content := Jintp.Render (View, Values);
+      Content := Standard.Jintp.Render (View, Values);
       Response.Set_Content_Length (Length (Content));
       Stream.Write (Content);
    end Render_Response;
 
-end Meadowsweet_Jintp;
+end Meadowsweet.Jintp;
